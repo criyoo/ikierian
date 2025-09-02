@@ -39,6 +39,7 @@ S3 Raw Bucket → Lambda Function → S3 Processed Bucket
 - **Terraform** >= 1.0
 - **Python** 3.9+ (for Lambda function)
 - **Make** (for simplified commands)
+- **jq** (for parsing awscli query output)
 
 ## ⚙️ Configuration
 

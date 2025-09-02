@@ -1,10 +1,14 @@
-# Ikerian AWS Data Pipeline Makefile
-# Simple commands for local testing and deployment
-WORKSPACE = $$(terraform workspace show)
-WORKSPACE_VARS = "-var-file=envs/$(WORKSPACE).tfvars"
+# Ikerian AWS Data Pipeline Makefile (Simple commands for local testing and deployment)
+WORKSPACE := $(shell terraform workspace show)
+WORKSPACE_VARS := "-var-file=envs/$(WORKSPACE).tfvars"
+
+RAW_EXISTS := $(shell aws s3 ls | grep ikerian-$(WORKSPACE)-raw-data >/dev/null 2>&1 && echo YES || echo NO)
+PROC_EXISTS := $(shell aws s3 ls | grep ikerian-$(WORKSPACE)-processed-data >/dev/null 2>&1 && echo YES || echo NO)
+LAMBDA_EXISTS := $(shell aws lambda get-function --function-name ikerian-$(WORKSPACE)-data-processor | jq .Configuration.FunctionName >/dev/null 2>&1 && echo YES || echo NO)
 
 
 .PHONY: init validate plan apply deploy destroy status
+
 
 fmt:
 	terraform fmt -recursive
@@ -34,27 +38,26 @@ destroy:
 	echo "✅ Resources destroyed successfully!";
 
 
+
 # Check if infrastructure is deployed
 status:
 	@echo "📊 Deployment Status:"
 	@echo ""
-	@if terraform output -raw raw_data_bucket_name >/dev/null 2>&1; then \
-		echo "✅ Raw Data Bucket: $$(terraform output -raw raw_data_bucket_name)"; \
-	else \
-		echo "❌ Raw Data Bucket: Not deployed"; \
-	fi; \
-	@if terraform output -raw processed_data_bucket_name >/dev/null 2>&1; then \
-		echo "✅ Processed Data Bucket: $$(terraform output -raw processed_data_bucket_name)"; \
-	else \
-		echo "❌ Processed Data Bucket: Not deployed"; \
-	fi; \
-	@if terraform output -raw lambda_function_name >/dev/null 2>&1; then \
-		echo "✅ Lambda Function: $$(terraform output -raw lambda_function_name)"; \
-	else \
-		echo "❌ Lambda Function: Not deployed"; \
-	fi; \
-	@if terraform output -raw cloudwatch_log_group_name >/dev/null 2>&1; then \
-		echo "✅ CloudWatch Log Group: $$(terraform output -raw cloudwatch_log_group_name)"; \
-	else \
-		echo "❌ CloudWatch Log Group: Not deployed"; \
-	fi
+
+ifeq ($(RAW_EXISTS),YES)
+	@echo "✅ Raw Data Bucket exists: ikerian-$(WORKSPACE)-raw-data"
+else
+	@echo "❌ Raw Data Bucket missing"
+endif
+
+ifeq ($(PROC_EXISTS),YES)
+	@echo "✅ Processed Data Bucket exists: ikerian-$(WORKSPACE)-processed-data"
+else
+	@echo "❌ Processed Data Bucket missing"
+endif
+
+ifeq ($(LAMBDA_EXISTS),YES)
+	@echo "✅ Lambda Function exists: ikerian-$(WORKSPACE)-data-processor"
+else
+	@echo "❌ Lambda Function missing"
+endif
