@@ -46,7 +46,6 @@ S3 Raw Bucket → Lambda Function → S3 Processed Bucket
 configuration is environment specific e.g. `envs/dev.tfvars`:
 
 ```hcl
-aws_region        = "us-east-1"
 project_name      = "ikerian"
 environment       = "dev"
 lambda_timeout    = 300
