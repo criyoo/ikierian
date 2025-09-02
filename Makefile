@@ -34,7 +34,7 @@ deploy: init plan apply
 	@echo "🎉 Full deployment completed successfully!"
 
 destroy:
-	terraform destroy -auto-approve;
+	terraform destroy $(WORKSPACE_VARS) -auto-approve;
 	echo "✅ Resources destroyed successfully!";
 
 
