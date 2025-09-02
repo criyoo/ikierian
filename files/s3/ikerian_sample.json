@@ -1,0 +1,18 @@
+[
+    {
+        "patient_id": "A12345",
+        "patient_name": "Ikerian A",
+        "scan_date": "2025-01-01",
+        "retina_thickness_microns": 275,
+        "optic_disc_cup_ratio": 0.4,
+        "diagnosis": "normal"
+    },
+    {
+        "patient_id": "B67890",
+        "patient_name": "Ikerian B",
+        "scan_date": "2025-02-15",
+        "retina_thickness_microns": 305,
+        "optic_disc_cup_ratio": 0.6,
+        "diagnosis": "suspected glaucoma"
+    }
+]
