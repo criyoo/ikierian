@@ -116,7 +116,6 @@ ikerian/
 - **Error Tracking**: Validation failure reporting
 
 ## 📊 Data Flow
-
 1. **Upload**: JSON file uploaded to raw bucket
 2. **Trigger**: S3 event triggers Lambda function
 3. **Validation**: Data validated for structure and content
@@ -125,7 +124,6 @@ ikerian/
 6. **Logging**: All operations logged to CloudWatch
 
 ## 🔍 Data Validation
-
 The pipeline validates:
 - **Field Existence**: Required fields present
 - **Data Types**: String validation for text fields
@@ -133,23 +131,18 @@ The pipeline validates:
 - **Structure**: List format with valid records
 
 ## 🚨 Error Handling
-
 - **Validation Errors**: Detailed error reports stored in S3
 - **Processing Failures**: Graceful degradation with logging
 - **Infrastructure Issues**: Terraform state management
 - **Monitoring**: CloudWatch alarms and metrics
 
 ## 🔒 Security Features
-
 - **Encryption**: S3 server-side encryption (AES256)
 - **Access Control**: IAM policies with least privilege
-- **Network Security**: Private subnets, no public access
 - **Audit Logging**: CloudTrail integration ready
 
 ## 📈 Monitoring & Observability
-
 - **CloudWatch Logs**: For Centralized logging
 - **Metrics**: Lambda execution metrics
 - **Alarms**: Error rate monitoring Alarms can be integrated
-
 ---

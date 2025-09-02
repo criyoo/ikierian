@@ -1,9 +1,7 @@
 # Approach, Assumptions, and Challenges
 
 ## 🎯 **Approach**
-
 Based on project objectives, the project was implemented using a **modular Terraform architecture** with clear separation of concerns:
-
 - **S3 Module**: Manages data storage with encryption, versioning, and lifecycle policies
 - **IAM Module**: Handles security with least-privilege policies and role-based access. The permissions are restricted to the specific s3 buckets and services.
 - **Lambda Module**: Implemented in Python with a simple JSON parsing and validation, it is triggered by an S3 event notification whenever a new file is uploaded to the Raw Data s3 Bucket.  
@@ -17,25 +15,26 @@ Function logic:
 
 
 ## 📋 **Assumptions**
+From the project objectives and deliverable requirement, the following assumption have been made.
 - **Data Format**: The provided ikerian_sample.json data is consistently well-structured and formatted.
 - **Processing Requirements**: requires a consistently simple field extraction (patient_id, patient_name). JSON files are small (a few patient record per file). For larger/multiple records, additional iteration logic may be required.
 - **AWS Environment**: Full AWS access with appropriate permissions
 - **S3 bucket**: names will be unique globally (use of bucket prefix in Terraform will handle naming conflicts with variables/prefixes).
 - **Security Level**: Standard AWS security practices is sufficient
-- **Scalability**: Lambda auto-scaling is designed to handles variable workloads, no additional scaling is required
+- **Use of Public Network**: No private networking is required, AWS lambda uses AWS-managed VPC by default and provides direct internet access for AWS service calls. The public access blocked s3 bucket permission should be sufficient
+- **Scalability**: Lambda auto-scaling is designed to handles variable workloads, so no additional scaling is required
 - **Data Volume**: Only moderate data processing will be required based on file size
 - **Error Handling**: Lambda and cloudwatch integration provides for Graceful degradation with detailed logging
 - **Monitoring**: From project objectives CloudWatch logs should provide sufficient observability
 - **Compliance**: Basic data protection measures should be adequate (encryption, access control)
 - **Maintenance**: Continued mainteance and infrastructure management would be possible with terraform.
 - **Data Sensitivity**: Due to some sensitive inforamtion in data, data would require encryption
-- **Processing Speed**: Near real-time processing acceptable
+- **Processing Speed**: Near real-time processing should be acceptable
 - **Cost Optimization**: From project objective and deliverable requirement, serverless architecture will provides cost efficiency
 
 
 
 ## 🚨 **Challenges Faced**
-
 **Challenge**: Encountered s3 Bucket naming conflicts.  
 **Solution**: Use of bucket prefix to eliminate the potential of naming conflict.
 
